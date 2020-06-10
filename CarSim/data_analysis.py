@@ -6,6 +6,7 @@ import time
 import sys
 import getopt
 import json
+from utils import load_population,store_population
 ophelp = 'Options:\n'
 ophelp += ' --algorithm, -A <algorithm> the algorithm you want to evolve.\n'
 ophelp += ' --population, -p <population>    dimension of the population.\n'
@@ -25,14 +26,6 @@ if __name__ == "__main__":
     evo = evolution.Evolution(7, "default_parameters")
     last_pop, algo = evo.evolve_params_DE_algorithm(20,10,2)
     uda = algo.extract(pygmo.sade)
-    #print(last_pop)
-    d = json.load(open('default_parameters', 'r'))
-    params_keys = list(d.keys())
-    with open('modified_parameters','w') as f:
-        for i in range(len(last_pop)):
-            values = last_pop.get_x()[i]
-            d = dict(zip(params_keys,values))
-            json_object = json.dumps(d)
-            f.write(json_object)
+    store_population('population_20_generations',last_pop)
     with open('log_file.txt','w') as f:
         f.write(str(uda.get_log()))
