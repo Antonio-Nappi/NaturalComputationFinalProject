@@ -12,7 +12,7 @@ def store_population(filename,population):
     keys = list()
     with open('keys.txt','r') as f:
         for line in f.readlines():
-            keys.append(line)
+            keys.append(line[:-1])
     with open(filename,'w') as f:
         for i in range(len(population)):
             values = population.get_x()[i]
