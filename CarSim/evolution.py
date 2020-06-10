@@ -3,18 +3,13 @@ import pygmo
 import problem
 
 class Evolution():
-    def __init__(self,pop_size,gen,seed,params,verbosity):
-        self.pop_size = pop_size
-        self.gen = gen
-        self.seed = seed
-        self.verbosity = verbosity
+    def __init__(self,pop_size,params):
         self.prob = pygmo.problem(problem.My_Problem(params))
-        self.pop = pygmo.population(self.prob,size=pop_size,seed=self.seed)
+        self.pop = pygmo.population(self.prob,size=pop_size)
 
-    def evolve_params_DE_algorithm(self,DE_params):
-        variant,variant_adpt,seed = DE_params.values()
-        algo = pygmo.algorithm(pygmo.sade(gen=self.gen,variant=variant,variant_adpt=variant_adpt,seed=seed))
-        algo.set_verbosity(self.verbosity)
+    def evolve_params_DE_algorithm(self,gen,variant,variant_adpt):
+        algo = pygmo.algorithm(pygmo.sade(gen,variant,variant_adpt))
+        algo.set_verbosity(1)
         new_pop = algo.evolve(self.pop)
         return new_pop,algo
 

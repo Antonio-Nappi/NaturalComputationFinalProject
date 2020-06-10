@@ -2,7 +2,8 @@
 import sys
 import math
 import snakeoil
-from client_utils import Track,TrackSection
+from client_utils import Track, TrackSection
+
 # Variables
 target_speed = 0
 lap = 0
@@ -614,13 +615,23 @@ class Client():
     def race(self):
         C.S.d['stucktimer'] = 0
         C.S.d['targetSpeed'] = 0
+        lap = 0
+        oldLapTime = 0
         for step in range(C.maxSteps, 0, -1):
             C.get_servers_input()
+            if C.S.d['lastLapTime'] != oldLapTime:
+                lap += 1
+                oldLapTime = C.S.d['lastLapTime']
             drive(C, step)
+            if lap == 2:
+                break
             C.respond_to_server()
-        if not C.stage:
-            T.write_track(C.trackname)
+
         C.R.d['meta'] = 1
         C.respond_to_server()
+
+        if not C.stage:
+            T.write_track(C.trackname)
+
         C.shutdown()
         return C.S

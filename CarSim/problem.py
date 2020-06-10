@@ -16,13 +16,12 @@ class My_Problem():
         self.lower_bound = [value - abs(value * 0.5) for value in d.values()]
         self.upper_bound = [value + abs(value * 0.5) for value in d.values()]
 
+
+
     def fitness(self, params_values):
-        print("prima di lanciare il server")
-        os.chdir(r'C:\Program Files (x86)\torcs')
-        subprocess.call(r'.\wtorcs.exe -nofuel -nodamage .\config\raceman\quickrace.xml')
-        print("server lanciato")
-        #extract information after the race
-        client_info = Client(dict(zip(self.params_keys, params_values))).race()
+        print("Inizio la corsa")
+        client = Client(dict(zip(self.params_keys, params_values)))
+        client_info = client.race()
         print("corsa finita")
         #return fitness ( we have to minimize, so we want to maximize the mean speed and put a minus sign)
         return [-(client_info.d['distRaced'] / (client_info.d['lastLapTime'] + client_info.d['curLapTime']))]
