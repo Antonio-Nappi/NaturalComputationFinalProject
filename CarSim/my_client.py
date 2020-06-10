@@ -1,4 +1,4 @@
-from snakeoil import Client
+import client
 
-class MyClient(Client):
-    def __init__(self,):
+if __name__ =="__main__":
+    client.Client("default_parameters").race()
