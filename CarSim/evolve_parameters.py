@@ -22,8 +22,9 @@ if __name__ == "__main__":
             pop = load_population('{}_times_evolved_population'.format(fname))
             population = pygmo.population()
             for p in pop:
-                population.push_back(np.array(p))
-        last_pop, algo = evolve_params_DE_algorithm(2, 4, 2, population)
+                print(p)
+                population.push_back(x=np.array(p))
+        last_pop, algo = evolve_params_DE_algorithm(1, 4, 2, population)
         uda = algo.extract(pygmo.sade)
         fname += 10
         store_population('{}_times_evolved_population'.format(fname), last_pop)

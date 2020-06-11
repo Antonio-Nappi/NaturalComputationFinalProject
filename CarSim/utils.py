@@ -6,7 +6,8 @@ def load_population(filename):
     with open(filename,'r') as f:
         for line in f.readlines():
             population.append(json.loads(line))
-    return population
+
+    return list(population.values())
 
 def store_population(filename,population):
     keys = list()
