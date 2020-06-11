@@ -4,8 +4,7 @@ from Server import Server
 import time
 from utils import load_population, store_population
 import problem
-
-
+import numpy as np
 if __name__ == "__main__":
     pygmo.set_global_rng_seed(4)
     #server = Server()
@@ -23,7 +22,7 @@ if __name__ == "__main__":
             pop = load_population('{}_times_evolved_population'.format(fname))
             population = pygmo.population()
             for p in pop:
-                population.push_back(p)
+                population.push_back(np.array(p))
         last_pop, algo = evolve_params_DE_algorithm(2, 4, 2, population)
         uda = algo.extract(pygmo.sade)
         fname += 10
