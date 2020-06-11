@@ -6,8 +6,10 @@ def load_population(filename):
     with open(filename,'r') as f:
         for line in f.readlines():
             population.append(json.loads(line))
-
-    return list(population.values())
+        values = list()
+        for pop in population:
+            values.append(list(pop.values()))
+    return values
 
 def store_population(filename,population):
     keys = list()
@@ -25,3 +27,7 @@ def store_population(filename,population):
         d = dict(zip(keys, best))
         json_object = json.dumps(d)
         f.write('{}\n'.format(json_object))
+
+##TODO function to pass from population(np.array of values) to parameters(json object) easily
+
+##TODO function to pass from parameter(json object) to population(np.array of values) easily
