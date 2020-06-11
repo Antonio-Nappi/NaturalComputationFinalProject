@@ -19,7 +19,7 @@ def store_population(filename,population):
             d = dict(zip(keys,values))
             json_object = json.dumps(d)
             f.write('{}\n'.format(json_object))
-    with open('best_{}'.format(filename)) as f:
+    with open('best_{}'.format(filename),'w') as f:
         best = population.champion_x
         d = dict(zip(keys, best))
         json_object = json.dumps(d)
