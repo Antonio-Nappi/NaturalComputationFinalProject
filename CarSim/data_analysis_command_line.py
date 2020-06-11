@@ -1,4 +1,4 @@
-import evolution
+import algorithms
 import pygmo
 from Server import Server
 import os
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     server = Server()
     server.start()
     time.sleep(5)
-    evo = evolution.Evolution(parameters['population'], parameters['generation'], parameters['params'], parameters['verbosity'])
+    evo = algorithms.Evolution(parameters['population'], parameters['generation'], parameters['params'], parameters['verbosity'])
     last_pop, algo = evo.evolve_params_DE_algorithm(parameters['algoparams'])
     uda = algo.extract(pygmo.sade)
 

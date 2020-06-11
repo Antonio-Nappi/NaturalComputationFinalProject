@@ -19,10 +19,8 @@ class My_Problem():
 
 
     def fitness(self, params_values):
-        print("Inizio la corsa")
         client = Client(dict(zip(self.params_keys, params_values)))
         client_info = client.race()
-        print("corsa finita")
         #return fitness ( we have to minimize, so we want to maximize the mean speed and put a minus sign)
         return [-(client_info.d['distRaced'] / (client_info.d['lastLapTime'] + client_info.d['curLapTime']))]
 

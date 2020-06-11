@@ -1,2 +1,4 @@
 
 *.pyc
+CarSim/10_times_evolved_population
+CarSim/log_file_10_generations.txt
