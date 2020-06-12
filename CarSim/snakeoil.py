@@ -361,7 +361,7 @@ class Client():
         self.trackname = 'unknown'
         self.stage = 3  # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
         self.debug = False
-        self.maxSteps = 10 ** 7  # 50steps/second
+        self.maxSteps = 10 ** 5  # 50steps/second
         self.pfilename = 'best_10_times_evolved_population'
         self.parse_the_command_line()
         if H: self.host = H

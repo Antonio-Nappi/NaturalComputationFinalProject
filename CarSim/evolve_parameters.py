@@ -2,6 +2,7 @@ from algorithms import evolve_population_DE_algorithm
 import pygmo
 from Server import Server
 import time
+import numpy as np
 from utils import load_population, store_population
 import problem
 import numpy as np
@@ -10,6 +11,7 @@ from CACS import CACS
 if __name__ == "__main__":
     #set pygmo random seed
     pygmo.set_global_rng_seed(4)
+    np.random.seed(4)
     #start two servers (one for each track)
     server_alpine = Server('alpine')
     server_alpine.start()

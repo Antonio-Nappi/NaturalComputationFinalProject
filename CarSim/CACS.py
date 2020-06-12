@@ -19,6 +19,7 @@ class CACS():
         self._fitness = None
 
     def initial_solution(self):
+        print('Initial settings')
         for i, key in enumerate(self._params.keys()):
             self._bounds.append((self._params[key] - abs(self._params[key]) * 0.5,
                                self._params[key] + abs(self._params[key]) * 0.5))
@@ -44,7 +45,7 @@ class CACS():
         for iter in range(self._stop_condition):
             results = []
             for k in range(self._n_ants):
-                print('iteration {}, ant {}'.format(iter, k))
+                print('iteration {}, ant {}'.format(iter+1, k+1))
                 x = []
                 for i in range(self._n_params):
                     drawn = np.random.normal(self._x_min[i], self._sigma[i])
@@ -53,7 +54,9 @@ class CACS():
                     elif drawn > self._bounds[i][1]:
                         drawn = self._bounds[i][1]
                     x.append(drawn)
+                print('Going to evaluate')
                 fitness = self.evaluate(x)
+                print('Evaluated')
                 results.append((fitness, x))
             print(results)
             self.store_data('{}_ants_results.csv'.format(iter), results)
@@ -83,7 +86,10 @@ class CACS():
     def store_data(self, filename, results):
         with open(filename, 'w', newline='') as f:
             writer = csv.writer(f, delimiter=',')
-
-            writer.writerow(['fitness'].extend(self._params.keys()))
+            header_row = ['fitness']
+            header_row.extend(self._params.keys())
+            writer.writerow(header_row)
             for result in results:
-                writer.writerow([result[0]].extend(result[1]))
+                row = [result[0]]
+                row.extend(result[1])
+                writer.writerow(row)
