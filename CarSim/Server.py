@@ -7,6 +7,6 @@ class Server(Thread):
         Thread.__init__(self)
 
     def run(self):
-        os.system(r"pushd C:\torcs_{} & wtorcs.exe -nofuel -nodamage -nolaptime  -T -t 1000000000 .\config\raceman\quickrace.xml >NUL".format(self.track))
+        os.system(r"pushd C:\Program Files (x86)\torcs_{} & wtorcs.exe -nofuel -nodamage -nolaptime -T -t 1000000000 .\config\raceman\quickrace.xml >NUL".format(self.track))
 
 

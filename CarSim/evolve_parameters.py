@@ -5,6 +5,7 @@ import time
 from utils import load_population, store_population
 import problem
 import numpy as np
+from CACS import CACS
 
 if __name__ == "__main__":
     #set pygmo random seed
@@ -16,23 +17,26 @@ if __name__ == "__main__":
     server_forza.start()
     time.sleep(10)
     fname = 0
-    #create a UDP (user defined problem) required by pygmo
-    p = problem.My_Problem('{}_times_evolved_parameters'.format(fname))
-    #create a pygmo problem
-    pg_prob = pygmo.problem(p)
-    while True:
-        if fname == 0: #first run
-            #create a population of 7 individuals
-            population = pygmo.population(pg_prob, 100)
-        else:
-            pop = load_population('{}_times_evolved_population'.format(fname))
-            population = pygmo.population(pg_prob)
-            for p in pop:
-                population.push_back(x=np.array(p))
-        last_pop, algo = evolve_population_DE_algorithm(1, 4, 2, population)
-        uda = algo.extract(pygmo.sade)
-        fname += 1
-        store_population('{}_times_evolved_population'.format(fname), last_pop)
-        with open('log_file_{}_generations.txt'.format(fname), 'w') as f:
-            for line in uda.get_log():
-                f.write('{}\n'.format(line))
+    # #create a UDP (user defined problem) required by pygmo
+    # p = problem.My_Problem('{}_times_evolved_parameters'.format(fname))
+    # #create a pygmo problem
+    # pg_prob = pygmo.problem(p)
+    # while True:
+    #     if fname == 0: #first run
+    #         #create a population of 7 individuals
+    #         population = pygmo.population(pg_prob, 100)
+    #     else:
+    #         pop = load_population('{}_times_evolved_population'.format(fname))
+    #         population = pygmo.population(pg_prob)
+    #         for p in pop:
+    #             population.push_back(x=np.array(p))
+    #     last_pop, algo = evolve_population_DE_algorithm(1, 4, 2, population)
+    #     uda = algo.extract(pygmo.sade)
+    #     fname += 1
+    #     store_population('{}_times_evolved_population'.format(fname), last_pop)
+    #     with open('log_file_{}_generations.txt'.format(fname), 'w') as f:
+    #         for line in uda.get_log():
+    #             f.write('{}\n'.format(line))
+    c = CACS('{}_times_evolved_parameters'.format(fname), n_ants=3, evaporation=1.1, stop_condition=3)
+    c.evolve()
+
