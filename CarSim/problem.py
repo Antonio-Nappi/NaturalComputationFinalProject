@@ -4,8 +4,9 @@ import json
 from client import Client
 import os
 import subprocess
-
-
+from multiprocessing import Queue,Pool
+import math
+import time
 class My_Problem():
 
     def __init__(self, filename):
@@ -16,13 +17,22 @@ class My_Problem():
         self.lower_bound = [value - abs(value * 0.5) for value in d.values()]
         self.upper_bound = [value + abs(value * 0.5) for value in d.values()]
 
-
-
     def fitness(self, params_values):
-        client = Client(dict(zip(self.params_keys, params_values)))
-        client_info = client.race()
+        params = dict(zip(self.params_keys, params_values))
+        print('prima di valutare la fitness')
+        with Pool(2) as p:
+            results=p.starmap(Client,[(params,3001),(params,3002)])
+            distRaced_forza,time_forza = results[0].info
+            distRaced_alpine,time_alpine = results[1].info
         #return fitness ( we have to minimize, so we want to maximize the mean speed and put a minus sign)
-        return [-(client_info.d['distRaced'] / (client_info.d['lastLapTime'] + client_info.d['curLapTime']))]
+        #distRaced_forza,time_forza=Client(params,3001).info
+        print("valutata una fitness")
+        #distRaced_alpine, time_alpine = Client(params,3002).info
+        if time_forza == 0 or time_alpine==0:
+            return [math.inf]
+        return [-((distRaced_forza / time_forza) + (distRaced_alpine/time_alpine))]
+
+        #return [-((distRaced_forza / time_forza))]
 
     def get_bounds(self):
         #return bounds for our parameters

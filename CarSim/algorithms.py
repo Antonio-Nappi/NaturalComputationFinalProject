@@ -1,11 +1,9 @@
 #in this file we make the evolution algorithm
 import pygmo
 
-def evolve_params_DE_algorithm(gen,variant,variant_adpt,population):
+def evolve_population_DE_algorithm(gen, variant, variant_adpt, population):
     algo = pygmo.algorithm(pygmo.sade(gen,variant,variant_adpt))
     algo.set_verbosity(1)
-    #print(type(algo))
-    #print(type(population))
     new_pop = algo.evolve(population)
     return new_pop,algo
 

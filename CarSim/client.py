@@ -598,11 +598,12 @@ def initialize_car(c):
 
 class Client():
 
-    def __init__(self, params):
+    def __init__(self, params,port=None):
         global T
         T = Track()
         global C
-        C = snakeoil.Client(P=params)
+
+        C = snakeoil.Client(P=params,p=port)
         if C.stage == 1 or C.stage == 2:
             try:
                 T.load_track(C.trackname)
@@ -611,22 +612,24 @@ class Client():
                 sys.exit()
             print("Track loaded!")
         initialize_car(C)
+        self.info = tuple(self.race())
 
     def race(self):
         C.S.d['stucktimer'] = 0
         C.S.d['targetSpeed'] = 0
         lap = 0
+        time = 0
         oldLapTime = 0
         for step in range(C.maxSteps, 0, -1):
             C.get_servers_input()
             if C.S.d['lastLapTime'] != oldLapTime:
                 lap += 1
                 oldLapTime = C.S.d['lastLapTime']
+                time+=oldLapTime
             drive(C, step)
             if lap == 2:
                 break
             C.respond_to_server()
-
         C.R.d['meta'] = 1
         C.respond_to_server()
 
@@ -634,4 +637,4 @@ class Client():
             T.write_track(C.trackname)
 
         C.shutdown()
-        return C.S
+        return (C.S.d['distRaced'],time)

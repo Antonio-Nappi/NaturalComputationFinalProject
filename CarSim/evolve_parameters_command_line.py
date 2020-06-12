@@ -60,6 +60,6 @@ if __name__ == "__main__":
     server.start()
     time.sleep(5)
     evo = algorithms.Evolution(parameters['population'], parameters['generation'], parameters['params'], parameters['verbosity'])
-    last_pop, algo = evo.evolve_params_DE_algorithm(parameters['algoparams'])
+    last_pop, algo = evo.evolve_population_DE_algorithm(parameters['algoparams'])
     uda = algo.extract(pygmo.sade)
 
