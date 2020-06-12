@@ -1,7 +1,7 @@
+import csv
 import json
 import numpy as np
 from client import Client
-from utils import store_population
 from multiprocessing import Pool
 
 
@@ -56,7 +56,7 @@ class CACS():
                 fitness = self.evaluate(x)
                 results.append((fitness, x))
             print(results)
-            store_population('{}_ants_results'.format(iter), results)
+            self.store_data('{}_ants_results.csv'.format(iter), results)
             results.sort(reverse=True)
 
             if self.is_higher_fitness(results[0][0]):
@@ -79,3 +79,11 @@ class CACS():
         for i in range(len(xs[0])):
             xi = [elem[i] for elem in xs]
             self._sigma[i] = self._evaporation * np.std(xi)
+
+    def store_data(self, filename, results):
+        with open(filename, 'w', newline='') as f:
+            writer = csv.writer(f, delimiter=',')
+
+            writer.writerow(['fitness'].extend(self._params.keys()))
+            for result in results:
+                writer.writerow([result[0]].extend(result[1]))
