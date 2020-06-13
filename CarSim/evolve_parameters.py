@@ -9,16 +9,17 @@ import numpy as np
 from CACS import CACS
 
 if __name__ == "__main__":
-    #set pygmo random seed
+    # set pygmo random seed
     pygmo.set_global_rng_seed(4)
     np.random.seed(4)
-    #start two servers (one for each track)
+    # start two servers (one for each track)
     server_alpine = Server('alpine')
     server_alpine.start()
     server_forza = Server('forza')
     server_forza.start()
     time.sleep(10)
-    fname = 6
+    dirname = 'ants_speed_missing_steps_fitness\\'
+    fname = 0
     # #create a UDP (user defined problem) required by pygmo
     # p = problem.My_Problem('{}_times_evolved_parameters'.format(fname))
     # #create a pygmo problem
@@ -39,6 +40,6 @@ if __name__ == "__main__":
     #     with open('log_file_{}_generations.txt'.format(fname), 'w') as f:
     #         for line in uda.get_log():
     #             f.write('{}\n'.format(line))
-    c = CACS('{}_times_evolved_parameters'.format(fname), n_ants=104, evaporation=1.1, stop_condition=100)
+    c = CACS('{}_times_evolved_parameters'.format(fname), dir_name='{}'.format(dirname), n_ants=104,
+             evaporation=1.1, stop_condition=100)
     c.evolve()
-

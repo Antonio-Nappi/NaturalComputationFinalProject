@@ -281,7 +281,8 @@ def steer_centeralign(P, sti, tp, a, ttp=0):
 
 def speed_appropriate_steer(P, sto, sx):
     if sx > 0:
-        stmax = max(P['sxappropriatest1'] / math.sqrt(sx) - P['sxappropriatest2'], P['safeatanyspeed'])
+        stmax = max(P['sxappropriatest1'] / math.sqrt(sx) - P['sxappropriatest2'],
+                    P['safeatanyspeed'])
     else:
         stmax = 1
     return snakeoil.clip(sto, -stmax, stmax)
@@ -554,7 +555,8 @@ def drive(c, tick):
     else:
         R['brake'] = 0
     R['gear'], R['clutch'] = automatic_transimission(P,
-                                                     S['rpm'], S['gear'], R['clutch'], S['rpm'], S['speedX'],
+                                                     S['rpm'], S['gear'], R['clutch'], S['rpm'],
+                                                     S['speedX'],
                                                      target_speed, tick)
     R['clutch'] = clutch_control(P, R['clutch'], slip, S['speedX'], S['speedY'], S['gear'])
     if S['distRaced'] < S['distFromStart']:
@@ -598,12 +600,12 @@ def initialize_car(c):
 
 class Client():
 
-    def __init__(self, params,port=None):
+    def __init__(self, params, port=None):
         global T
         T = Track()
         global C
 
-        C = snakeoil.Client(P=params,p=port)
+        C = snakeoil.Client(P=params, p=port)
         if C.stage == 1 or C.stage == 2:
             try:
                 T.load_track(C.trackname)
@@ -625,7 +627,7 @@ class Client():
             if C.S.d['lastLapTime'] != oldLapTime:
                 lap += 1
                 oldLapTime = C.S.d['lastLapTime']
-                time+=oldLapTime
+                time += oldLapTime
             drive(C, step)
             if lap == 2:
                 break
@@ -637,4 +639,4 @@ class Client():
             T.write_track(C.trackname)
 
         C.shutdown()
-        return (C.S.d['distRaced'],time)
+        return (C.S.d['distRaced'], time, step + 1)

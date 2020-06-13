@@ -6,10 +6,13 @@ from multiprocessing import Pool
 
 
 class CACS():
-    def __init__(self, param_file_name, n_ants=None, evaporation=1, stop_condition=100):
+    def __init__(self, param_file_name, dir_name='.\\', n_ants=None, evaporation=1,
+                 stop_condition=100):
         with open(param_file_name, "r") as file:
             self._params = json.load(file)
-            self._starting_iteration = int(param_file_name[0])
+        self._starting_iteration = int(param_file_name[0])
+        self._param_file_name = param_file_name[0]
+        self._dir_name = dir_name
         self._n_params = len(self._params.keys())
         self._n_ants = len(self._params.keys()) if n_ants is None else n_ants
         self._stop_condition = stop_condition
@@ -22,7 +25,7 @@ class CACS():
     def initial_solution(self):
         for i, key in enumerate(self._params.keys()):
             self._bounds.append((self._params[key] - abs(self._params[key]) * 0.5,
-                               self._params[key] + abs(self._params[key]) * 0.5))
+                                 self._params[key] + abs(self._params[key]) * 0.5))
             self._x_min.append(np.random.uniform(self._bounds[i][0], self._bounds[i][1]))
             self._sigma.append(3 * (self._bounds[i][1] - self._bounds[i][0]))
 
@@ -30,11 +33,12 @@ class CACS():
         params = dict(zip(self._params.keys(), x))
         with Pool(2) as p:
             results = p.starmap(Client, [(params, 3001), (params, 3002)])
-            distRaced_forza, time_forza = results[0].info
-            distRaced_alpine, time_alpine = results[1].info
+            distRaced_forza, time_forza, step_forza = results[0].info
+            distRaced_alpine, time_alpine, step_alpine = results[1].info
         if time_forza == 0 or time_alpine == 0:
             return - np.inf
-        return (distRaced_forza / time_forza) + (distRaced_alpine / time_alpine)
+        return (distRaced_forza / time_forza) * (10 ** 5 - step_forza) + (
+                distRaced_alpine / time_alpine) * (10 ** 5 - step_alpine)
 
     def evolve(self):
         self.initial_solution()
@@ -45,7 +49,7 @@ class CACS():
         for iter in range(self._stop_condition):
             results = []
             for k in range(self._n_ants):
-                print('iteration {}, ant {}'.format(iter+1, k+1))
+                print('iteration {}, ant {}'.format(self._starting_iteration + iter + 1, k + 1))
                 x = []
                 for i in range(self._n_params):
                     drawn = np.random.normal(self._x_min[i], self._sigma[i])
@@ -58,7 +62,9 @@ class CACS():
                 results.append((fitness, x))
 
             results.sort(reverse=True)
-            self.store_data('{}_ants_results.csv'.format(self._starting_iteration+iter+1), results)
+            self.store_data(
+                '{}{}_ants_results.csv'.format(self._dir_name, self._starting_iteration + iter + 1),
+                results)
             if self.is_higher_fitness(results[0][0]):
                 self.update(results[0][0], results[0][1])
             self.compute_sigma(results)
