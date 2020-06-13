@@ -18,7 +18,7 @@ if __name__ == "__main__":
     server_forza = Server('forza')
     server_forza.start()
     time.sleep(10)
-    fname = 0
+    fname = 6
     # #create a UDP (user defined problem) required by pygmo
     # p = problem.My_Problem('{}_times_evolved_parameters'.format(fname))
     # #create a pygmo problem
@@ -39,6 +39,6 @@ if __name__ == "__main__":
     #     with open('log_file_{}_generations.txt'.format(fname), 'w') as f:
     #         for line in uda.get_log():
     #             f.write('{}\n'.format(line))
-    c = CACS('{}_times_evolved_parameters'.format(fname), n_ants=3, evaporation=1.1, stop_condition=3)
+    c = CACS('{}_times_evolved_parameters'.format(fname), n_ants=104, evaporation=1.1, stop_condition=100)
     c.evolve()
 

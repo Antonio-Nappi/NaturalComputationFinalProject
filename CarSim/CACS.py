@@ -9,6 +9,7 @@ class CACS():
     def __init__(self, param_file_name, n_ants=None, evaporation=1, stop_condition=100):
         with open(param_file_name, "r") as file:
             self._params = json.load(file)
+            self._starting_iteration = int(param_file_name[0])
         self._n_params = len(self._params.keys())
         self._n_ants = len(self._params.keys()) if n_ants is None else n_ants
         self._stop_condition = stop_condition
@@ -19,7 +20,6 @@ class CACS():
         self._fitness = None
 
     def initial_solution(self):
-        print('Initial settings')
         for i, key in enumerate(self._params.keys()):
             self._bounds.append((self._params[key] - abs(self._params[key]) * 0.5,
                                self._params[key] + abs(self._params[key]) * 0.5))
@@ -33,7 +33,7 @@ class CACS():
             distRaced_forza, time_forza = results[0].info
             distRaced_alpine, time_alpine = results[1].info
         if time_forza == 0 or time_alpine == 0:
-            return np.inf
+            return - np.inf
         return (distRaced_forza / time_forza) + (distRaced_alpine / time_alpine)
 
     def evolve(self):
@@ -54,14 +54,11 @@ class CACS():
                     elif drawn > self._bounds[i][1]:
                         drawn = self._bounds[i][1]
                     x.append(drawn)
-                print('Going to evaluate')
                 fitness = self.evaluate(x)
-                print('Evaluated')
                 results.append((fitness, x))
-            print(results)
-            self.store_data('{}_ants_results.csv'.format(iter), results)
-            results.sort(reverse=True)
 
+            results.sort(reverse=True)
+            self.store_data('{}_ants_results.csv'.format(self._starting_iteration+iter+1), results)
             if self.is_higher_fitness(results[0][0]):
                 self.update(results[0][0], results[0][1])
             self.compute_sigma(results)
