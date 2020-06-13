@@ -8,7 +8,7 @@ from multiprocessing import Pool
 class CACS():
     def __init__(self, param_file_name, dir_name='.\\', n_ants=None, evaporation=1,
                  stop_condition=100):
-        with open(param_file_name, "r") as file:
+        with open('{}{}'.format(dir_name, param_file_name), "r") as file:
             self._params = json.load(file)
         self._starting_iteration = int(param_file_name[0])
         self._param_file_name = param_file_name[0]
@@ -33,12 +33,15 @@ class CACS():
         params = dict(zip(self._params.keys(), x))
         with Pool(2) as p:
             results = p.starmap(Client, [(params, 3001), (params, 3002)])
-            distRaced_forza, time_forza, step_forza = results[0].info
-            distRaced_alpine, time_alpine, step_alpine = results[1].info
-        if time_forza == 0 or time_alpine == 0:
+            distRaced_forza, time_forza, length_forza = results[0].info
+            distRaced_wheel, time_wheel, length_wheel = results[1].info
+        extra_dist_forza = (distRaced_forza - length_forza) / 10
+        extra_dist_wheel = (distRaced_wheel - length_wheel) / 10
+        extra_dist_penalty = extra_dist_forza * extra_dist_wheel
+        if time_forza == 0 or time_wheel == 0:
             return - np.inf
-        return (distRaced_forza / time_forza) * (10 ** 5 - step_forza) + (
-                distRaced_alpine / time_alpine) * (10 ** 5 - step_alpine)
+        return (distRaced_forza / time_forza) * (
+                    distRaced_wheel / time_wheel) + extra_dist_penalty
 
     def evolve(self):
         self.initial_solution()

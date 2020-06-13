@@ -13,12 +13,12 @@ if __name__ == "__main__":
     pygmo.set_global_rng_seed(4)
     np.random.seed(4)
     # start two servers (one for each track)
-    server_alpine = Server('alpine')
-    server_alpine.start()
+    server_wheel = Server('wheel')
+    server_wheel.start()
     server_forza = Server('forza')
     server_forza.start()
     time.sleep(10)
-    dirname = 'ants_speed_missing_steps_fitness\\'
+    dirname = 'ants_speed_extra_raced\\'
     fname = 0
     # #create a UDP (user defined problem) required by pygmo
     # p = problem.My_Problem('{}_times_evolved_parameters'.format(fname))
