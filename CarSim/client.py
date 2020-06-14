@@ -41,34 +41,34 @@ def automatic_transimission(P, r, g, c, rpm, sx, ts, tick):
                 ng = 1
     elif not tick % 50 and sx > 20:
         pass
-    elif g == 6 and rpm < P['dnsh5rpm']:
+    elif g == 6 and rpm < P['dnsh5rpm']:  # marcia 6 e giri motore minori di soglia down marcia 5
         ng = g - 1
         nc = 1
-    elif g == 5 and rpm < P['dnsh4rpm']:
+    elif g == 5 and rpm < P['dnsh4rpm']:  # marcia 5 e giri motore minori di soglia down marcia 4
         ng = g - 1
         nc = 1
-    elif g == 4 and rpm < P['dnsh3rpm']:
+    elif g == 4 and rpm < P['dnsh3rpm']:  # marcia 4 e giri motore minori di soglia down marcia 3
         ng = g - 1
         nc = 1
-    elif g == 3 and rpm < P['dnsh2rpm']:
+    elif g == 3 and rpm < P['dnsh2rpm']:  # marcia 3 e giri motore minori di soglia down marcia 2
         ng = g - 1
         nc = 1
-    elif g == 2 and rpm < P['dnsh1rpm']:
+    elif g == 2 and rpm < P['dnsh1rpm']:  # marcia 2 e giri motore minori di soglia down marcia 1
         ng = g - 1
         nc = 1
-    elif g == 5 and rpm > P['upsh6rpm']:
+    elif g == 5 and rpm > P['upsh6rpm']:  # marcia 5 e giri motore maggiori di soglia up marcia 6
         ng = g + 1
         nc = 1
-    elif g == 4 and rpm > P['upsh5rpm']:
+    elif g == 4 and rpm > P['upsh5rpm']:  # marcia 4 e giri motore maggiori di soglia up marcia 5
         ng = g + 1
         nc = 1
-    elif g == 3 and rpm > P['upsh4rpm']:
+    elif g == 3 and rpm > P['upsh4rpm']:  # marcia 3 e giri motore maggiori di soglia up marcia 4
         ng = g + 1
         nc = 1
-    elif g == 2 and rpm > P['upsh3rpm']:
+    elif g == 2 and rpm > P['upsh3rpm']:  # marcia 2 e giri motore maggiori di soglia up marcia 3
         ng = g + 1
         nc = 1
-    elif g == 1 and rpm > P['upsh2rpm']:
+    elif g == 1 and rpm > P['upsh2rpm']:  # marcia 1 e giri motore maggiori di soglia up marcia 2
         ng = g + 1
         nc = 1
     elif not g:
@@ -190,7 +190,7 @@ def speed_planning(P, t, sx, sy, st, a, infleX, infleA):
         brakingpace = P['brakingpaceslow']
     base = min(infleX * brakingpace + willneedtobegoing, carmax)
     base = max(base, P['carmin'])
-    if st < P['consideredstr8']:
+    if st < P['consideredstr8']:  # angolo di sterzata minore di soglia percorso dritto
         return base
     uncoolsy = abs(sy) / sx
     syadjust = 2 - 1 / P['oksyp'] * uncoolsy
@@ -276,7 +276,8 @@ def steer_centeralign(P, tp, a, ttp=0):
 
 def speed_appropriate_steer(P, sto, sx):
     if sx > 0:
-        stmax = max(P['sxappropriatest1'] / math.sqrt(sx) - P['sxappropriatest2'], P['safeatanyspeed'])
+        stmax = max(P['sxappropriatest1'] / math.sqrt(sx) - P['sxappropriatest2'],
+                    P['safeatanyspeed'])
     else:
         stmax = 1
     return snakeoil.clip(sto, -stmax, stmax)
@@ -546,7 +547,8 @@ def drive(c, tick):
     else:
         R['brake'] = 0
     R['gear'], R['clutch'] = automatic_transimission(P,
-                                                     S['rpm'], S['gear'], R['clutch'], S['rpm'], S['speedX'],
+                                                     S['rpm'], S['gear'], R['clutch'], S['rpm'],
+                                                     S['speedX'],
                                                      target_speed, tick)
     R['clutch'] = clutch_control(P, R['clutch'], slip, S['speedX'], S['speedY'])
     if S['distRaced'] < S['distFromStart']:
@@ -590,12 +592,12 @@ def initialize_car(c):
 
 class Client():
 
-    def __init__(self, params,port=None):
+    def __init__(self, params, port=None):
         global T
         T = Track()
         global C
 
-        C = snakeoil.Client(P=params,p=port)
+        C = snakeoil.Client(P=params, p=port)
         if C.stage == 1 or C.stage == 2:
             try:
                 T.load_track(C.trackname)
@@ -617,8 +619,7 @@ class Client():
             if C.S.d['lastLapTime'] != oldLapTime:
                 lap += 1
                 oldLapTime = C.S.d['lastLapTime']
-                time+=oldLapTime
-                #print(C.S.d)
+                time += oldLapTime
             drive(C, step)
             if step == 1 and lap !=2:
                 time = 0
@@ -632,5 +633,4 @@ class Client():
             T.write_track(C.trackname)
 
         C.shutdown()
-
-        return (C.S.d['distRaced'],time,T.laplength*2)
+        return (C.S.d['distRaced'], time, T.laplength*2)
