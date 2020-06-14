@@ -352,7 +352,7 @@ class DriverAction():
 
 
 class Client():
-    def __init__(self, H=None, p=None, i=None, e=None, t=None, s=None, d=None, P=None):
+    def __init__(self, H=None, p=None, i=None, e=None, t=None, s=None, d=None, P=None,f=None):
         # If you don't like the option defaults,  change them here.
         self.host = 'localhost'
         self.port = 3001
@@ -361,8 +361,8 @@ class Client():
         self.trackname = 'unknown'
         self.stage = 3  # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
         self.debug = False
-        self.maxSteps = 10 ** 7  # 50steps/second
-        self.pfilename = 'best_10_times_evolved_population'
+        self.maxSteps = 10 ** 5  # 50steps/second
+        self.pfilename = 'best_16_times_evolved_population'
         self.parse_the_command_line()
         if H: self.host = H
         if p: self.port = p
@@ -371,6 +371,7 @@ class Client():
         if t: self.trackname = t
         if s: self.stage = s
         if d: self.debug = d
+        if f: self.pfilename = f
         self.S = ServerState()
         self.R = DriverAction()
         self.P = P
@@ -463,7 +464,7 @@ class Client():
         sockdata = str().encode()
         while True:
             try:
-                # Receive server data 
+                # Receive server data
                 sockdata, addr = self.so.recvfrom(1024)
             except socket.error as emsg:
                 print('.', end=' ')

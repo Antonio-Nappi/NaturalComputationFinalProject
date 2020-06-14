@@ -24,3 +24,5 @@ CarSim/old values/test_double_fitness_sade_7_elements/log_file_1_generations.txt
 CarSim/tmp/log_file_1_generations.txt
 CarSim/tmp/best_1_times_evolved_population
 CarSim/tmp/1_times_evolved_population
+CarSim/.idea/CarSim.iml
+CarSim/.idea/misc.xml
