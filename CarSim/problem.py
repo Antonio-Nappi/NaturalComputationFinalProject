@@ -14,8 +14,10 @@ class My_Problem():
         d = json.load(open(filename, 'r'))
         self.params_keys = list(d.keys())
         #define bounds as value_of_the_parameter +- 50%
-        self.lower_bound = [value - abs(value * 0.5) for value in d.values()]
-        self.upper_bound = [value + abs(value * 0.5) for value in d.values()]
+        lb = json.load(open('lower_bounds', 'r'))
+        ub = json.load(open('upper_bounds', 'r'))
+        self.lower_bounds=[value for value in lb.values()]
+        self.upper_bounds=[value for value in ub.values()]
 
     def fitness(self, params_values):
         params = dict(zip(self.params_keys, params_values))
@@ -41,4 +43,4 @@ class My_Problem():
 
     def get_bounds(self):
         #return bounds for our parameters
-        return (self.lower_bound, self.upper_bound)
+        return (self.lower_bounds, self.upper_bounds)

@@ -1,0 +1,39 @@
+scalate di marcia +- 10% (max 15%)
+carmaxvisib +30% -10%(da provare +-40%)
+backontracksx +-10% (forse anche meno)
+obvious +15% -10%
+obviousbase + 10% -5%
+carmin +15% 
+brakingpacefast +10%
+brakingpaceslow -10%
+consideredstr8 +100%
+oksyp inalterato
+pointingahead inalterato
+sortofontrack -20% 
+offroad inalterato
+backward +-15%
+steer2edge +-10%
+s2cen +-10%
+seriousABS +- 10%
+sycon1 +- 10%
+sycon2 +-10%
+clutchslip +-10%
+clutchspin +-10%
+stst +- 20%
+st +- 20 %
+stC +-20%
+fullstis +- 10%
+fullmaxsx +-10%
+slipdec -50%
+spincutclip invariato
+spincutint invariato
+spincutslp invariato
+wwlim -15%
+s2sen +-15%
+str8thresh +20%
+ignoreinfleA +100%
+safeatanyspeed +100%
+sxappropriatetest1 +50%
+sxappropriatestes2 -50%
+skidsev1 +- 20%
+wheeldia +-20%

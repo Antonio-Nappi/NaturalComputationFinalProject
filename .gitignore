@@ -26,3 +26,6 @@ CarSim/tmp/best_1_times_evolved_population
 CarSim/tmp/1_times_evolved_population
 CarSim/.idea/CarSim.iml
 CarSim/.idea/misc.xml
+*.iml
+*.iml
+*.xml
