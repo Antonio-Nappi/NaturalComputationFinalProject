@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import math
 import sys
-
 import snakeoil
 from client_utils import Track, TrackSection
 
@@ -41,34 +40,34 @@ def automatic_transimission(P, r, g, c, rpm, sx, ts, tick):
                 ng = 1
     elif not tick % 50 and sx > 20:
         pass
-    elif g == 6 and rpm < P['dnsh5rpm']:  # marcia 6 e giri motore minori di soglia down marcia 5
+    elif g == 6 and rpm < P['dnsh5rpm']:
         ng = g - 1
         nc = 1
-    elif g == 5 and rpm < P['dnsh4rpm']:  # marcia 5 e giri motore minori di soglia down marcia 4
+    elif g == 5 and rpm < P['dnsh4rpm']:
         ng = g - 1
         nc = 1
-    elif g == 4 and rpm < P['dnsh3rpm']:  # marcia 4 e giri motore minori di soglia down marcia 3
+    elif g == 4 and rpm < P['dnsh3rpm']:
         ng = g - 1
         nc = 1
-    elif g == 3 and rpm < P['dnsh2rpm']:  # marcia 3 e giri motore minori di soglia down marcia 2
+    elif g == 3 and rpm < P['dnsh2rpm']:
         ng = g - 1
         nc = 1
-    elif g == 2 and rpm < P['dnsh1rpm']:  # marcia 2 e giri motore minori di soglia down marcia 1
+    elif g == 2 and rpm < P['dnsh1rpm']:
         ng = g - 1
         nc = 1
-    elif g == 5 and rpm > P['upsh6rpm']:  # marcia 5 e giri motore maggiori di soglia up marcia 6
+    elif g == 5 and rpm > P['upsh6rpm']:
         ng = g + 1
         nc = 1
-    elif g == 4 and rpm > P['upsh5rpm']:  # marcia 4 e giri motore maggiori di soglia up marcia 5
+    elif g == 4 and rpm > P['upsh5rpm']:
         ng = g + 1
         nc = 1
-    elif g == 3 and rpm > P['upsh4rpm']:  # marcia 3 e giri motore maggiori di soglia up marcia 4
+    elif g == 3 and rpm > P['upsh4rpm']:
         ng = g + 1
         nc = 1
-    elif g == 2 and rpm > P['upsh3rpm']:  # marcia 2 e giri motore maggiori di soglia up marcia 3
+    elif g == 2 and rpm > P['upsh3rpm']:
         ng = g + 1
         nc = 1
-    elif g == 1 and rpm > P['upsh2rpm']:  # marcia 1 e giri motore maggiori di soglia up marcia 2
+    elif g == 1 and rpm > P['upsh2rpm']:
         ng = g + 1
         nc = 1
     elif not g:
@@ -190,7 +189,7 @@ def speed_planning(P, t, sx, sy, st, a, infleX, infleA):
         brakingpace = P['brakingpaceslow']
     base = min(infleX * brakingpace + willneedtobegoing, carmax)
     base = max(base, P['carmin'])
-    if st < P['consideredstr8']:  # angolo di sterzata minore di soglia percorso dritto
+    if st < P['consideredstr8']:
         return base
     uncoolsy = abs(sy) / sx
     syadjust = 2 - 1 / P['oksyp'] * uncoolsy
@@ -634,3 +633,4 @@ class Client():
 
         C.shutdown()
         return (C.S.d['distRaced'], time, T.laplength*2)
+		
