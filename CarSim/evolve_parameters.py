@@ -10,7 +10,7 @@ from CACS import CACS
 if __name__ == "__main__":
     # set pygmo random seed
     # pygmo.set_global_rng_seed(190196)
-    np.random.seed(211294)
+    np.random.seed(290796)
 
     # # initialize
     # fname = 0
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     server_forza = Server('wheel')
     server_forza.start()
     time.sleep(10)
-    dirname = 'ants_speed_extra_raced_with_bounds_evap_1.5\\'
-    c = CACS('default_parameters_with_bounds', dir_name='{}'.format(dirname), n_ants=96,
-             evaporation=1.5, stop_condition=100)
-    c.evolve()
+    dirname = 'ants_evap_1.25_seed_290796\\'
+    c = CACS('default_parameters_with_bounds', dir_name=dirname, n_ants=96,
+             evaporation=1.25, stop_condition=100)
+    c.evolve(('23_ants_results_newbest.csv', '33_ants_results.csv'))

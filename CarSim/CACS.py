@@ -9,7 +9,7 @@ from multiprocessing import Pool
 class CACS():
     def __init__(self, param_file_name, dir_name='.\\', n_ants=None, evaporation=1,
                  stop_condition=100):
-        with open('{}{}'.format(dir_name, param_file_name), "r") as file:
+        with open(param_file_name, "r") as file:
             self._params = json.load(file)
         self._starting_iteration = 0  # int(param_file_name[0])
         # self._param_file_name = param_file_name[0]
@@ -53,18 +53,28 @@ class CACS():
                         (None, dict(zip(self._params.keys(), [float(elem) for elem in row[1:]]))))
             self.compute_sigma(results)
 
+    # def evaluate(self, params):
+    #     with Pool(2) as p:
+    #         results = p.starmap(Client, [(params, 3001), (params, 3002)])
+    #         distRaced_forza, time_forza, length_forza = results[0].info
+    #         distRaced_wheel, time_wheel, length_wheel = results[1].info
+    #     extra_dist_forza = (distRaced_forza - length_forza) / 10
+    #     extra_dist_wheel = (distRaced_wheel - length_wheel) / 10
+    #     extra_dist_penalty = extra_dist_forza * extra_dist_wheel
+    #     if time_forza == 0 or time_wheel == 0:
+    #         return - np.inf
+    #     return (distRaced_forza / time_forza) * (
+    #             distRaced_wheel / time_wheel) - extra_dist_penalty
+
     def evaluate(self, params):
-        with Pool(2) as p:
-            results = p.starmap(Client, [(params, 3001), (params, 3002)])
+        with Pool(1) as p:
+            results = p.starmap(Client, [(params, 3001)])
             distRaced_forza, time_forza, length_forza = results[0].info
-            distRaced_wheel, time_wheel, length_wheel = results[1].info
         extra_dist_forza = (distRaced_forza - length_forza) / 10
-        extra_dist_wheel = (distRaced_wheel - length_wheel) / 10
-        extra_dist_penalty = extra_dist_forza * extra_dist_wheel
-        if time_forza == 0 or time_wheel == 0:
+        extra_dist_penalty = extra_dist_forza ** 2
+        if time_forza == 0:
             return - np.inf
-        return (distRaced_forza / time_forza) * (
-                distRaced_wheel / time_wheel) - extra_dist_penalty
+        return (distRaced_forza / time_forza) ** 2 - extra_dist_penalty
 
     def evolve(self, recover=None):
         if recover is None:
@@ -92,14 +102,13 @@ class CACS():
                 fitness = self.evaluate(x)
                 results.append((fitness, x))
 
-            t0 = time.time()
             results.sort(key=lambda t: t[0], reverse=True)
-            print("Time elapsed:", (time.time() - t0)/1000)
-            self.store_data(
-                '{}{}_ants_results.csv'.format(self._dir_name, iter + 1),
-                results)
             if self.is_higher_fitness(results[0][0]):
+                self.store_data(
+                    '{}{}_ants_results_newbest.csv'.format(self._dir_name, iter + 1), results)
                 self.update(results[0][0], results[0][1])
+            else:
+                self.store_data('{}{}_ants_results.csv'.format(self._dir_name, iter + 1), results)
             self.compute_sigma(results)
 
     def is_higher_fitness(self, fitness):
