@@ -598,14 +598,20 @@ def initialize_car(c):
 ############## END CLIENT SNAKEOIL ###############
 ##################################################
 
-#
+# Definizione della classe Client.
+# Il codice originale è stato leggermente modificato per trasformare client in una classe,
+# e per agevolare l'esecuzione in batch.
+# Il metodo race restituisce le seguenti informazioni sulla simulazione:
+# - distanza percorsa;
+# - tempo impiegato;
+# - lunghezza di due lap del tracciato.
 class Client():
     def __init__(self, params, port=None):
         global T
         T = Track()
         global C
-
         C = snakeoil.Client(P=params, p=port)
+
         if C.stage == 1 or C.stage == 2:
             try:
                 T.load_track(C.trackname)
@@ -621,6 +627,7 @@ class Client():
         lap = 0
         time = 0
         oldLapTime = 0
+
         for step in range(C.maxSteps, 0, -1):
             C.get_servers_input()
             if C.S.d['lastLapTime'] != oldLapTime:

@@ -47,7 +47,7 @@ class CACS():
         self._evaporation = evaporation
         self._fitness = None
 
-    # Funzione che guida l'evoluzione.
+    # Metodo che guida l'evoluzione.
     # Prende in ingresso opzionalmente una tupla contenente:
     # - il nome del file CSV del migliore risultato;
     # - il nome del file CSV dell'ultimo risultato.
@@ -104,7 +104,7 @@ class CACS():
                 self.store_data('{}{}_ants_results.csv'.format(self._dir_name, iter + 1), results)
             self.compute_sigma(results)
 
-    # Funzione che definisce la soluzione iniziale.
+    # Metodo che definisce la soluzione iniziale.
     # Per ogni parametro:
     # - inserisce nel dizionario dei limiti una tupla contenente il limite inferiore
     # e il limite superiore, calcolati secondo quanto definito nel file dei parametri;
@@ -119,7 +119,7 @@ class CACS():
             self._x_max[key] = self._params[key][0]
             self._sigma[key] = 3 * (self._bounds[key][1] - self._bounds[key][0])
 
-    # Funzione che ripristina lo stato di un'evoluzione interrotta.
+    # Metodo che ripristina lo stato di un'evoluzione interrotta.
     # Prende in ingresso:
     # - il nome del file CSV del migliore risultato;
     # - il nome del file CSV dell'ultimo risultato.
@@ -155,11 +155,12 @@ class CACS():
                         (None, dict(zip(self._params.keys(), [float(elem) for elem in row[1:]]))))
             self.compute_sigma(results)
 
-    # Funzione che valuta la qualità di una soluzione.
+    # Metodo che valuta la qualità di una soluzione.
     # Prende in ingresso il dizionario contenente la soluzione da valutare.
     # Avvia la simulazione con due client con gli stessi parametri su due porte differenti,
     # una per ciascuno dei server avviati; per ciascuna simulazione riceve informazioni
-    # sulla distanza percorsa, il tempo impiegato e la lunghezza del tracciato.
+    # sulla distanza percorsa, il tempo impiegato e la lunghezza del tracciato (considerando
+    # i due lap, quindi doppia).
     # Per ciascuna simulazione, calcola la distanza percorsa in più rispetto alla lunghezza
     # del tracciato; successivamente, calcola il prodotto delle due grandezze così ottenute,
     # per inserirlo come penalità nella funzione di fitness.
@@ -179,12 +180,12 @@ class CACS():
         return (distRaced_forza / time_forza) * (
                 distRaced_wheel / time_wheel) - extra_dist_penalty
 
-    # Funzione di supporto per il multithreading in evaluate.
+    # Metodo di supporto per il multithreading in evaluate.
     def start_client(self, params, port):
         client = Client(params, port)
         return client.race()
 
-    # Variante della funzione di valutazione per l'esecuzione su un solo circuito
+    # Variante del metodo di valutazione per l'esecuzione su un solo circuito.
     # def evaluate(self, params):
     #     with Pool(1) as p:
     #         results = p.starmap(Client, [(params, 3001)])
@@ -195,20 +196,20 @@ class CACS():
     #         return - np.inf
     #     return (distRaced_forza / time_forza) ** 2 - extra_dist_penalty
 
-    # Funzione che verifica se si è ottenuta una nuova migliore fitness.
+    # Metodo che verifica se si è ottenuta una nuova migliore fitness.
     def is_higher_fitness(self, fitness):
         if self._fitness is None or fitness > self._fitness:
             return True
         else:
             return False
 
-    # Funzione che aggiorna la fitness e il dizionario delle medie.
+    # Metodo che aggiorna la fitness e il dizionario delle medie.
     def update(self, fitness, x_max=None):
         self._fitness = fitness
         if x_max is not None:
             self._x_max = x_max
 
-    # Funzione che calcola e aggiorna il dizionario delle deviazioni standard.
+    # Metodo che calcola e aggiorna il dizionario delle deviazioni standard.
     # Per ciascun parametro, la deviazione standard è calcolata in base a tutti
     # i valori estratti dalle formiche dell'ultima colonia.
     def compute_sigma(self, results):
@@ -217,7 +218,7 @@ class CACS():
             xi = [elem[key] for elem in xs]
             self._sigma[key] = self._evaporation * np.std(xi)
 
-    # Funzione che si occupa del salvataggio dei dati.
+    # Metodo che si occupa del salvataggio dei dati.
     # Salva in un file CSV la fitness e i parametri di ogni formica, in ordine
     # decrescente di fitness.
     # Salva in un file JSON i parametri della migliore formica.
