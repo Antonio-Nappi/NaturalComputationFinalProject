@@ -344,7 +344,7 @@ def throttle_control(P, ts, sx, sl, sy, ang, steer):
     if ts < 0:
         tooslow = sx - ts
     else:
-        okmaxspeed4steer = P['stst'] * (steer **2) - P['st'] * steer + P['stC']
+        okmaxspeed4steer = P['stst'] * (steer ** 2) - P['st'] * steer + P['stC']
         if steer > P['fullstis']:
             ts = P['fullstmaxsx']
         else:
@@ -369,7 +369,7 @@ def brake_control(P, bi, sx, sy, ts, sk):
     if toofast < 0:
         return 0
     if toofast:
-        #bo += P['brake'] * toofast / max(1, abs(sk))
+        # bo += P['brake'] * toofast / max(1, abs(sk))
         bo = 1
     if sk > P['seriousABS']: bo = 0
     if sx < 0: bo = 0
@@ -520,7 +520,7 @@ def drive(c, tick):
             s = steer_centeralign(P, S['trackPos'], S['angle'])
             badness += 1
         else:
-            s = steer_reactive(P,  S['trackPos'], S['angle'], S['track'],
+            s = steer_reactive(P, S['trackPos'], S['angle'], S['track'],
                                S['speedX'], infleA, straightness)
     else:
         s = steer_centeralign(P, S['trackPos'], S['angle'])
@@ -620,7 +620,7 @@ class Client():
                 oldLapTime = C.S.d['lastLapTime']
                 time += oldLapTime
             drive(C, step)
-            if step == 1 and lap !=2:
+            if step == 1 and lap != 2:
                 time = 0
                 break
             if lap == 2:
@@ -632,5 +632,4 @@ class Client():
             T.write_track(C.trackname)
 
         C.shutdown()
-        return (C.S.d['distRaced'], time, T.laplength*2)
-		
+        return (C.S.d['distRaced'], time, T.laplength * 2)
