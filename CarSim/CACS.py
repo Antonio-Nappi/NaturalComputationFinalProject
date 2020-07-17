@@ -1,11 +1,11 @@
 # Importazione delle librerie Python.
 import csv
 import json
+from multiprocessing import Pool
 import numpy as np
 
 # Importazione dei moduli custom.
 from client import Client
-from multiprocessing import Pool
 
 
 # Definizione della classe Continuous Ant Colony System.
@@ -168,9 +168,9 @@ class CACS():
     # la simulazione.
     def evaluate(self, params):
         with Pool(2) as p:
-            results = p.starmap(Client, [(params, 3001), (params, 3002)])
-            distRaced_forza, time_forza, length_forza = results[0].info
-            distRaced_wheel, time_wheel, length_wheel = results[1].info
+            results = p.starmap(self.start_client, [(params, 3001), (params, 3002)])
+            distRaced_forza, time_forza, length_forza = results[0]
+            distRaced_wheel, time_wheel, length_wheel = results[1]
         extra_dist_forza = (distRaced_forza - length_forza) / 10
         extra_dist_wheel = (distRaced_wheel - length_wheel) / 10
         extra_dist_penalty = extra_dist_forza * extra_dist_wheel
@@ -178,6 +178,11 @@ class CACS():
             return - np.inf
         return (distRaced_forza / time_forza) * (
                 distRaced_wheel / time_wheel) - extra_dist_penalty
+
+    # Funzione di supporto per il multithreading.
+    def start_client(self, params, port):
+        client = Client(params, port)
+        return client.race()
 
     # Variante della funzione di valutazione per l'esecuzione su un solo circuito
     # def evaluate(self, params):

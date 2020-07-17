@@ -1,4 +1,9 @@
-#!/usr/bin/python
+##################################################
+############# START CLIENT SNAKEOIL ##############
+##################################################
+
+
+# !/usr/bin/python
 import math
 import sys
 import snakeoil
@@ -589,8 +594,12 @@ def initialize_car(c):
     c.respond_to_server()
 
 
-class Client():
+##################################################
+############## END CLIENT SNAKEOIL ###############
+##################################################
 
+#
+class Client():
     def __init__(self, params, port=None):
         global T
         T = Track()
@@ -605,7 +614,6 @@ class Client():
                 sys.exit()
             print("Track loaded!")
         initialize_car(C)
-        self.info = tuple(self.race())
 
     def race(self):
         C.S.d['stucktimer'] = 0

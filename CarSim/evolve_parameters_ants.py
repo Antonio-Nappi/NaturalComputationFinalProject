@@ -9,7 +9,7 @@ from CACS import CACS
 # Modulo main.
 if __name__ == "__main__":
     # Lista dei fattori di evaporazione.
-    evaps = ['1.25', '1.50', '1.75']
+    evaps = ['3', '1.50', '1.75']
 
     # Lista dei seed
     seeds = [190196, 211294, 290796]
