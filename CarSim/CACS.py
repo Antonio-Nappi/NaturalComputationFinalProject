@@ -179,7 +179,7 @@ class CACS():
         return (distRaced_forza / time_forza) * (
                 distRaced_wheel / time_wheel) - extra_dist_penalty
 
-    # Funzione di supporto per il multithreading.
+    # Funzione di supporto per il multithreading in evaluate.
     def start_client(self, params, port):
         client = Client(params, port)
         return client.race()
