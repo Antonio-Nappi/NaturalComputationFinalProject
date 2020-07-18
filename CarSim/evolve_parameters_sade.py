@@ -42,7 +42,7 @@ if __name__ == "__main__":
                 uda = algo.extract(pygmo.sade) #estraggo le informazioni dell'algoritmo
                 fname += 1
                 store_population('100_individuals/{}_times_evolved_population'.format(fname),
-                                 last_pop)  #salvo la popolazione ad ogni generazione
+                                 last_pop, fname)  #salvo la popolazione ad ogni generazione
                 if uda is None:
                     print("ERRORE")
                 with open('log_file_{}_generations.txt'.format(fname), 'w') as f: #salvo il file di log
