@@ -1,10 +1,11 @@
 # Importazione delle librerie Python.
-import time
 import numpy as np
 import os
+import time
+
 # Importazione dei moduli custom.
 from Server import Server
-from CACS import CACS
+from CACS.CACS import CACS
 
 # Modulo main.
 if __name__ == "__main__":
@@ -34,6 +35,7 @@ if __name__ == "__main__":
             # Nome della directory in cui salvare i risultati.
             dirname = 'ants_evap_{}_seed_{}\\'.format(evap, seed)
             os.makedirs(os.path.dirname(dirname), exist_ok=True)
+
             # Oggetto di classe CACS, prende in ingresso:
             # - il nome del file JSON dei parametri;
             # - il nome della directory, definito prima;
