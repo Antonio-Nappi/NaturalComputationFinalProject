@@ -1,0 +1,8 @@
+Questa cartella contiene gli script per far evolvere i parametri utilizzati dal client SnakeOil.
+Nel package SnakeOil sono contenuti i file originari, a cui sono state apportate piccole modifiche per rendere la struttura
+un po' più modulare.
+Nel caso in cui si voglia eseguire l'evoluzione con l'algortimo SaDE si deve lanciare lo script corrispondente. Allo stesso
+modo si procede se si vuole utilizzare CACS come algoritmo di evoluzione.
+All'interno di ciascuno script si possono configurare facilmente gli iperparametri dei relativi algoritmi.
+Tutto il codice è accuratamente commentato per una più agevole interpretazione.
+Lo script data_analysis contiene il codice di esempio per realizzare i grafici relativi ai risultati delle evoluzioni.
