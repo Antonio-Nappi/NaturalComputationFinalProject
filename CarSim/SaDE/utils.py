@@ -53,7 +53,7 @@ keys =[
 'wwlim'
 ]
 #Salvataggio della popolazione su file
-def store_population(filename,population,fname):
+def store_population(filename,population):
     to_store = list()
     for i in range(len(population)):
         to_store.append((float(population.get_f()[i]),list(population.get_x()[i]))) #estrazione dell'individuo e della sua fitness

@@ -36,15 +36,14 @@ if __name__ == "__main__":
         # imposto il seed
         pygmo.set_global_rng_seed(seed)
         for variant in [6,8]: # le due varianti: rand-to-best e best
-            for i in range(50):
-                population = pygmo.population(pg_prob, individuals)# definisco la popolazione per il problema
-                last_pop, algo = evolve_population_DE_algorithm(1, variant, 2, population) # faccio evolvere la popolazione
-                uda = algo.extract(pygmo.sade) #estraggo le informazioni dell'algoritmo
-                fname += 1
-                store_population('100_individuals/{}_times_evolved_population'.format(fname),
-                                 last_pop)  #salvo la popolazione ad ogni generazione
-                if uda is None:
-                    print("ERRORE")
-                with open('log_file_{}_generations.txt'.format(fname), 'w') as f: #salvo il file di log
-                    for line in uda.get_log():
-                        f.write('{}\n'.format(line))
+            population = pygmo.population(pg_prob, individuals)# definisco la popolazione per il problema
+            last_pop, algo = evolve_population_DE_algorithm(50, variant, 2, population) # faccio evolvere la popolazione
+            uda = algo.extract(pygmo.sade) #estraggo le informazioni dell'algoritmo
+            fname += 1
+            store_population('100_individuals/{}_times_evolved_population'.format(fname),
+                             last_pop)  #salvo la popolazione ogni 50 generazioni
+            if uda is None:
+                print("ERRORE")
+            with open('log_file_{}_generations.txt'.format(fname), 'w') as f: #salvo il file di log
+                for line in uda.get_log():
+                    f.write('{}\n'.format(line))
