@@ -31,7 +31,6 @@ if __name__ == "__main__":
     #scelta del numero di individui
     individuals = 100
     for seed in seeds:
-
         fname = 0
         # imposto il seed
         pygmo.set_global_rng_seed(seed)
